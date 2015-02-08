@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Examples</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<link href="" rel="stylesheet">
+</head>
+<body>
+    <script>
+
+    	///////////////////////////////////////////////////////////////////////////////////////
+
+    	// function Foo () {}
+
+    	// var f1 = new Foo();
+
+    	// console.log ( f1.__proto__ === Foo.prototype );   	 // true
+    	// console.log ( Foo.prototype.constructor === Foo );   // true
+
+    	// // function Object(){[native code]}//Javascript自带，不是自定义的，可以近似认为是基类
+
+    	// // function Function(){[native code]}//Javascript自带，不是自定义的，可以近似认为是基类
+
+
+    	///////////////////////////////////////////////////////////////////////////////////////
+
+
+    	// 扩展Object原型
+    	// Object.prototype.test4extend = "123";
+    	// console.log("Function.test4extend : " + Function.test4extend);		// 123
+    	// console.log("Object.test4extend : " + Object.test4extend);		// 123
+
+    	// var obj = new Object();
+    	// console.log("object.test4extend : "+obj.test4extend);			// 123
+    	
+    	// function Foo(){}
+
+    	// var foo = new Foo();
+
+    	// console.log("foo.test4extend : " + foo.test4extend);			// 123
+    	// console.log("Foo.test4extend : " + Foo.test4extend);			// 123
+
+
+		// 1、Object扩展了所有的object（obj,foo）。
+		// 2、Object扩展了Function, 这点说明Function扩展自Object
+		// 3、Object扩展了自身的属性，即Object.test4extend也是可以的。
+
+		///////////////////////////////////////////////////////////////////////////////////////
+
+
+		// 扩展Function原型
+		// Function.prototype.test4extend = "123";		// 扩展Function原型
+		// console.log ( "Function.test4extend : " + Function.test4extend );	// 123
+		// console.log ( "Object.test4extend : " + Object.test4extend );		// 123
+
+		// var obj = new Object();
+		// console.log ( "obj.test4extend : " + obj.test4extend );		// undefined
+
+		// function Foo () {}
+
+		// var foo = new Foo();
+
+		// console.log ("foo.test4extend : " + foo.test4extend);		// undefined
+		// console.log ("Foo.test4extend : " + Foo.test4extend);		// 123
+
+		// // 只有尚未被实例化的受影响，实例对象无法被扩展
+
+		// console.log ( obj.__proto__ === Object.prototype );
+		// console.log ( foo.__proto__ === Foo.prototype );		
+		// // true , 实例化对象的 __proto__ 属性 和其原型的 prototype 属性是相同的 
+
+		// console.log ( Foo.prototype.__proto__ === Object.prototype );	// true 
+		// console.log ( Object.prototype.__proto__ );	// null
+		// console.log ( obj.__proto__ ); 				// Object {}
+		// console.log ( obj.__proto__.__proto__ ); 	// null
+		// console.log ( foo.__proto__ ); 				// Foo {}
+		// console.log ( foo.__proto__.__proto__ ); 	// Object {}
+		// console.log ( foo.__proto__.__proto__ === obj.__proto__ ); // true
+		// console.log ( foo.__proto__.__proto__.__proto__ ); 	// null
+
+		// /////////////////////////////////////////////////////////////////////////////////
+
+		// console.log ( Function.__proto__ === Function.prototype );//true
+		// console.log ( Object.__proto__ === Function.prototype );//true
+		
+
+		// 从实际效果上来说，可以认为__proto__是用来扩展Function的，扩展出来的函数，可以直接调用，不需要new出对象才能用，同时对象是不会扩展通过__proto__扩展的方法或属性的。
+
+		// 扩展__proto__
+		function Foo(){}
+		Foo.__proto__.test = "Foo.__proto__.test";
+		Foo.__proto__.addextend = function () { console.log('Foo.__proto__.addextend') };
+		console.log( Foo.test ); // "Foo.__proto__.test"
+		Foo.addextend(); // function called
+
+		var foo = new Foo;
+		console.log ( foo.test );  // undefined
+		foo.addextend(); 		   // Uncaught TypeError: undefined is not a function
+
+		// __proto__ 扩展的内容只能被 函数原型进行调用
+		// prototype 扩展的内容只能被 实例化对象进行调用
+
+
+
+
+		// 1、Function的__proto__和prototype就是一个，扩展任何一个都是相同的效果。
+		// 2、Object的__proto__就是Function.Prototype。
+		//    当我们扩展Object.__proto__时，就相当于扩展了Function.prototype和__proto__，反之亦然。
+
+		// 【总结】
+		// Function扩展自Object，但是Function对Object又有影响，
+		// 这是通过Object.__proto__就是（===）Function.prototype建立的联系。
+		// 记住这个联系后，我们还要记住__proto__和prototype的区别，
+		// 前者扩展的只可以被Function直接调用，
+		// 后者扩展的只可以通过其实例调用。
+		// 另外，还要注意__proto__和prototype的链的概念，
+		// 这是因为，他们可以互相关联，访问到Function或Ojbect的内容。
+
+
+    </script>
+</body>
+</html>
